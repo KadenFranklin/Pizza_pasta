@@ -1,17 +1,14 @@
 
-# C:\Users\Kaden's Laptop\Desktop\#assets
-# or
-# C:\Users\Kaden's Laptop\Documents\GitHub\KadenFranklin.github.io\csci270\Pasta, Pizza, Person\#assets
+# "C:\Users\Kaden's Laptop\Downloads\assets"
 
-# txt file contains that text associated with each post, already enough to do sentiment analysis on
 
 # Timeline:
 # by 4/22
 # want to extract the amount of likes, comments and such from each post.
+
 # want to have dataset sorted into people/ food items/ pizza
-# want to have comments in text file i think
 # want to have some sort of working facial detection program using haarcascade
-# work on code that will generate new xml files
+# work on code that will generate new xml files as presets
 
 # by 4/29
 # want to have a working version of haar-cascade training algorithm or whatever
