@@ -4,6 +4,14 @@ import lzma
 import argparse
 import cv2 as cv
 
+# To initialize the dataset must use a Library called instaloader.
+# It did not work on my machine, but here is the code to replicate an instagram dataset.
+
+# import instaloader
+# L = instaloader.Instaloader()
+# 	for post in Post.from_username(L.context, ‘eric_thepizzaguy’).get_posts():
+# 		L.download_post(post, target = ‘#assets’)
+
 # "C:\Users\Kaden's Laptop\Downloads\assets"
 path = r"C:\Users\Kaden's Laptop\Desktop\assets"
 
