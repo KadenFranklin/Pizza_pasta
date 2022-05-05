@@ -48,7 +48,7 @@ def make_pizza(s):
 
 
 def dect_face():
-    # I had to use multiple cascade classifiers to check each image. I was getting a good number of false positives.
+    # I had to use multiple cascade classifiers to check each image. I was getting a good number of false positives. ( )
 
     face = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
     eye = cv.CascadeClassifier('haarcascade_eye_tree_eyeglasses.xml')
@@ -62,28 +62,28 @@ def dect_face():
             img = cv.imread(n_path)
             gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
             gray = cv.equalizeHist(gray)
-            faces = face.detectMultiScale(gray, 1.1, 4)
-
-            if faces is not None:
+            faces = face.detectMultiScale(gray, 1.1, 8)
+            if len(faces) >= 1:
                 for (x, y, w, h) in faces:
                     faceROI = gray[y:y+h, x:x+w]
-                    eyes = eye.detectMultiScale(faceROI, 1.1)
-                    alts = alt.detectMultiScale(gray, 1.1)
-                    alts2 = alt2.detectMultiScale(gray, 1.1)
-                    altstre = alttre.detectMultiScale(gray, 1.1)
-                    print(f"File: {file} \n face:{len(faces)} \n eye:{eyes} \n alt1:{alts} \n alt2:{alts2} \n alt3:{altstre} \n ")
-                    cv.imshow("Image", img)
-                    cv.waitKey(1)
+                    eyes = eye.detectMultiScale(faceROI, 1.1, 4)
+                    alts = alt.detectMultiScale(gray, 1.1, 5)
+                    alts2 = alt2.detectMultiScale(gray, 1.1, 5)
+                    altstre = alttre.detectMultiScale(gray, 1.1, 5)
+                    print(f"File: {file} \n face:{len(faces)} \n eye:{len(eyes)} \n alt1:{len(alts)} \n alt2:{len(alts2)} \n alt3:{len(altstre)} \n ")
                     # An image most likely contains a face if the following classifiers are not none:
                     # frontal_face and eye_tree_eyeglass
                     # frontal_face and alt1, alt2, alt3
-                    if len(faces) > 1 and len(eyes) >= 1:
+                    if len(faces) >= 3:
                         shutil.copyfile(n_path, person + '\\' + file)
                         print(f"con. 1 copied {file} file. \n")
-                    elif len(faces) >= 1 and (len(alts) >= 1 and len(alts2) >= 1 and len(altstre) >= 1):
+                    if len(faces) >= 1 and len(eyes) >= 1:
+                        shutil.copyfile(n_path, person + '\\' + file)
+                        print(f"con. 1/2 copied {file} file. \n")
+                    elif len(faces) >= 2 and (len(alts) + len(alts2) + len(altstre)) >= 2:
                         shutil.copyfile(n_path, person + '\\' + file)
                         print(f"con. 2 copied {file} file. \n")
-
+                    break
 
 
 def not_comment():
@@ -142,7 +142,8 @@ path = r"C:\Users\Kaden's Laptop\Desktop\assets"
 pizza = r"C:\Users\Kaden's Laptop\Desktop\assets\Pizza"
 pasta = r"C:\Users\Kaden's Laptop\Desktop\assets\Pasta"
 person = r"C:\Users\Kaden's Laptop\Desktop\assets\Person"
-dect_face()
+
+# dect_face()
 
 # pers_list = []
 #       for peep in person:
