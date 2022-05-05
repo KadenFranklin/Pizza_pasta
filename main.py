@@ -27,12 +27,20 @@ path = r"C:\Users\Kaden's Laptop\Desktop\assets"
 # want to have a working version of haar-cascade training algorithm or whatever
 # start creating individual modules that detect a specific ingredient
 
-# by 5/6
-# hopefully all code works long before the time I have to present,
-# and I will have plenty of time to analyse my data
-# and everything will be okay.
+# (These were attainable goals, but I simply got preoccupied with other things)
+# Moving forward:
+# 1 Week Till presentation
 
-# A main algorithm that will look something like this
+# If I get everything else working I will work on not_comment again.
+# dect_face - Checks if an img contains a face and moves it to the People directory
+# get_face_count - Goes through People directory and tries to detect the same face multiple times
+#                   (Want this to return some count of people, or x most common faces)
+# make_pizza(s) - make s subdirectory in Pizza
+# pizza_pie -
+
+# Main Algorithm -
+
+# will look something like this
 
 #       I might have to loop through the files to create these but
 #       list_of_piz = [] (a list of lists(lists are pizza ingredients))
@@ -61,7 +69,9 @@ path = r"C:\Users\Kaden's Laptop\Desktop\assets"
 #           use the filenames in some way so that they are displayed
 #           properly in chronological order
 #
-# Ingredients I think I should detect:
+# To create a preset you must create a file beforehand to store the trained cascade classifier
+# Then run make_pizza(s) where s is the file path of images you want to use as positive samples
+# In my case I made.
 #   Pepperoni
 #   Sausage
 #   Mushroom
@@ -77,13 +87,18 @@ path = r"C:\Users\Kaden's Laptop\Desktop\assets"
 
 
 def pizza_pie():
-    deez = 0
-    deez += 1
+    # i will make this some helper function for make_pizza()
+    #(idk what yet but I'll prob need to just space it out)
     # to detect different ingredients in an image, if the image is a slice of pizza
 
 
+def make_pizza(s):
+    # This will make a corresponding subdirectory in pizza, and then generate the xml file.
+    # https://docs.opencv.org/3.4/dc/d88/tutorial_traincascade.html
+    new_path = path + s
+
+
 def dect_face():
-    # want to have some sort of working facial detection program using haarcascade
     # https://www.youtube.com/watch?v=LopYA64KmdE
     face = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
     eye = cv.CascadeClassifier('haarcascade_eye_tree_eyeglasses.xml')
@@ -92,7 +107,6 @@ def dect_face():
             img = cv.imread(file)
             gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
             faces = face.detectMultiScale(gray, 1.1, 4)
-            # the checking faces probably comes in right here.
             for (x, y, w, h,) in faces:
                 cv.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 3)
             new_dir = r"C:\Users\Kaden's Laptop\Desktop\assets\person"
@@ -141,4 +155,3 @@ def not_comment():
                                     f.write(val)
                                     print('successfully performed a write... my code works?!?!?!')
                                     break
-
