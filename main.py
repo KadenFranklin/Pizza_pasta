@@ -2,7 +2,6 @@ import os
 import json
 import lzma
 import shutil
-import argparse
 import cv2 as cv
 
 # Timeline:
@@ -16,39 +15,40 @@ import cv2 as cv
 # want to have a working version of haar-cascade training algorithm or whatever
 # start creating individual modules that detect a specific ingredient
 
+# by 5/6
+# all of my code will be working, with sufficient time to work through problems I encounter.
+
 # These were attainable goals, but I simply got preoccupied with other things
-
-# If I get everything else working I will work on not_comment again.
-# dect_face - Checks if an img contains a face and moves it to the People directory
-# get_face_count - Goes through People directory and tries to detect the same face multiple times
-#                   (Want this to return some count of people, or x most common faces)
-# make_pizza(s) - generates the xml file for preset of name 's'
-# pizza_pie -
-
-# To initialize the dataset must use a Library called instaloader.
-# It did not work on my machine, but here is the code to replicate an instagram dataset.
-
-# import instaloader
-# L = instaloader.Instaloader()
-# 	for post in Post.from_username(L.context, ‘eric_thepizzaguy’).get_posts():
-# 		L.download_post(post, target = ‘#assets’)
 
 
 def pizza_pie():
-    x = 1
-    # I will make this some helper function for make_pizza()
-    # (idk what yet but I'll prob need to just space it out)
-    # to detect different ingredients in an image, if the image is a slice of pizza
+    # makes a text file directing to positive/negative samples as per:
+    # https://docs.opencv.org/3.4/dc/d88/tutorial_traincascade.html
+    neg = r"C:\Users\Kaden's Laptop\Documents\GitHub\KadenFranklin.github.io\Pizza_pasta\neg.txt"
+    with open(neg, "a") as f:
+        for x in os.listdir(person):
+            f.write("\n")
+            f.write("\Person" + "\\" + x)
+
+    for y in os.listdir(pizza):
+        new = pizza + "\\" + y + "\\" + "pos.txt"
+        with open(new, "w") as f1:
+            for yy in os.listdir(pizza + "\\" + y):
+                if yy == "pos.txt":
+                    break
+                f1.write("\n")
+                f1.write(yy)
 
 
 def make_pizza(s):
     # This will make a corresponding subdirectory in pizza, and then generate the xml file.
-    # https://docs.opencv.org/3.4/dc/d88/tutorial_traincascade.html
+
     new_path = path + s
 
 
 def dect_face():
-    # I had to use multiple cascade classifiers to check each image. I was getting a good number of false positives. ( )
+    # Checks if an img contains a face and moves it to the People directory
+    # I had to use multiple cascade classifiers to check each image. I was getting a good number of false positives.
 
     face = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
     eye = cv.CascadeClassifier('haarcascade_eye_tree_eyeglasses.xml')
@@ -87,9 +87,8 @@ def dect_face():
 
 
 def not_comment():
-    # this was originally meant to pull comments from the posts,
-    # json files did not contain comments, but do contain likes,
-    # and alt image text which I think will be funny to do sentiment analysis on
+    # this was originally meant to pull comments from the posts, json files did not contain comments, but do contain likes, and alt image text which I think will be funny to do sentiment analysis on
+    # did not get this to work because of the layout of json files.
     count = 0
     for file in os.listdir(path):
         if file.endswith('.xz'):
@@ -131,49 +130,66 @@ def not_comment():
                                     break
 
 
+# To initialize the dataset must use a Library called instaloader.
+# It did not work on my machine, but here is the code to replicate an instagram dataset.
+
+# import instaloader
+# L = instaloader.Instaloader()
+# 	for post in Post.from_username(L.context, ‘eric_thepizzaguy’).get_posts():
+# 		L.download_post(post, target = ‘#assets’)
+
 # Main Algorithm
-# Uses code above to loop through images in pizza and person directories.
-# Will attempt to create a frequency count of specific person.
-# checks each image against presets - stores values in a dict where key is filename of img(date), and value is list
-# of ingredients I might have to loop through the files to create these but list_of_piz = []
-# (a list of lists(lists are pizza ingredients))
-# "C:\Users\Kaden's Laptop\Downloads\assets"
+# Calls above functions in appropriate locations, loops through person directory, and makes a frequency count per person
+# Then loops through all images, checks each image against presets & stores values in a dict where key is filename of img(date), and value is list(of ingredients)
+cv = r"C:\Users\Kaden's Laptop\Desktop\opencv\build\x64\vc15\bin"
 path = r"C:\Users\Kaden's Laptop\Desktop\assets"
-pizza = r"C:\Users\Kaden's Laptop\Desktop\assets\Pizza"
-pasta = r"C:\Users\Kaden's Laptop\Desktop\assets\Pasta"
-person = r"C:\Users\Kaden's Laptop\Desktop\assets\Person"
+pasta = r"C:\Users\Kaden's Laptop\Documents\GitHub\KadenFranklin.github.io\Pizza_pasta\Pasta"
+pizza = r"C:\Users\Kaden's Laptop\Documents\GitHub\KadenFranklin.github.io\Pizza_pasta\Pizza"
+person = r"C:\Users\Kaden's Laptop\Documents\GitHub\KadenFranklin.github.io\Pizza_pasta\Person"
+
 
 # dect_face()
+# pizza_pie()
 
 # pers_list = []
-#       for peep in person:
-#           if person not in list,
-#               append to list
-#           else:
-#               make a new entry in list_of_per
-#
-#       find person with the highest count, maybe incorporate likes into calc somewhere
-#           can also do sentiment analysis on posts including people ig
-#           also do something with most liked post of a person
+# for peep in person:
+#     x = 1
+# what ability do we have to compare one face to another?
+# if peep not in list,
+#         append to list
+#     else:
+#         make a new entry in list_of_per
 
-#       for pizz in pizza:
-#
+# for elem in pers_list
+#   find highest count and display that image.
+
+# ingredients = ['Pepperoni', 'Mushroom', 'Tomato', 'Olive', 'Pickle', 'Onion', 'Jalepeno']
+#       for img in assets:
 #
 #       should make a frequency chart of ingredients over time
 #           use the filenames in some way so that they are displayed
 #           properly in chronological order
 #
-# To create a preset you must create a file beforehand to store the trained cascade classifier
-# Then run make_pizza(s) where s is the file path of images you want to use as positive samples
-# In my case I made.
-#   'Pepperoni'
-#   'Sausage'
-#   'Mushroom'
-#   'Ham'
-#   'Tomato'
-#   'Olive'
-#   'Bacon'
-#   'Pickle'
-#   'Chicken'
-#   'Onion'
-#   'Jalapeño'
+
+# sent_afinn = []
+# for line in book_lines_list:
+#     if afinn.score(line) > -50:
+#         sent_afinn.append(afinn.score(line))
+#
+# sent_vader = []
+# values_dict = {}
+# for line in book_lines_list:
+#     values = sid.polarity_scores(line)
+#     values_dict[line] = values['compound']
+#     if values['compound'] > -0.9999999:
+#         sent_vader.append(values['compound'])
+
+# def moving_average(data, window):
+#     return [sum(data[i:i+window]) / window for i in range(len(data) - window)]
+#
+# book_window = 2**10
+# n = moving_average(sent_afinn, book_window)
+# plt.plot(range(len(n)), n)
+# n = moving_average([s*5 for s in sent_vader], 2**10)
+# plt.plot(range(len(n)), n)
+
