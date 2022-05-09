@@ -41,12 +41,6 @@ def pizza_pie():
                 f1.write(yy)
 
 
-def make_pizza(s):
-    # This will make a corresponding subdirectory in pizza, and then generate the xml file.
-
-    new_path = path + s
-
-
 def dect_face():
     # Checks if an img contains a face and moves it to the People directory
     # I had to use multiple cascade classifiers to check each image. I was getting a good number of false positives.
@@ -131,6 +125,8 @@ def not_comment():
                                     break
 
 
+# def make_pizza(s):
+
 # To initialize the dataset must use a Library called instaloader.
 # It did not work on my machine, but here is the code to replicate an instagram dataset.
 
@@ -151,6 +147,15 @@ person = r"C:\Users\kaden\Downloads\Pizza_pasta\Person"
 
 # dect_face()
 # pizza_pie()
+# follow instructions in cascade utils.txt to create classifiers
+
+jal = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Jalepeno\Data\cascade.xml"
+mush = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Mushroom\Data\cascade.xml"
+oli = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Olive\Data\cascade.xml"
+oni = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Onion\Data\cascade.xml"
+pep = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Pepperoni\Data\cascade.xml"
+pic = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Pickle\Data\cascade.xml"
+tom = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Tomato\Data\cascade.xml"
 
 # pers_list = []
 # for peep in person:
