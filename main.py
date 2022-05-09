@@ -24,11 +24,12 @@ import cv2 as cv
 def pizza_pie():
     # makes a text file directing to positive/negative samples as per:
     # https://docs.opencv.org/3.4/dc/d88/tutorial_traincascade.html
-    neg = r"C:\Users\Kaden's Laptop\Documents\GitHub\KadenFranklin.github.io\Pizza_pasta\neg.txt"
+    # I used the same negative images for each dataset, which is just images of people
+    # You will have to move each pos.txt when running programs in cascadeutils.txt, these are specific to my project structure
+    neg = r"C:\Users\kaden\Downloads\pizza_pasta\neg.txt"
     with open(neg, "a") as f:
         for x in os.listdir(person):
-            f.write("\n")
-            f.write("\Person" + "\\" + x)
+            f.write("Person/" + x + "\n")
 
     for y in os.listdir(pizza):
         new = pizza + "\\" + y + "\\" + "pos.txt"
@@ -141,11 +142,11 @@ def not_comment():
 # Main Algorithm
 # Calls above functions in appropriate locations, loops through person directory, and makes a frequency count per person
 # Then loops through all images, checks each image against presets & stores values in a dict where key is filename of img(date), and value is list(of ingredients)
-cv = r"C:\Users\Kaden's Laptop\Desktop\opencv\build\x64\vc15\bin"
-path = r"C:\Users\Kaden's Laptop\Desktop\assets"
-pasta = r"C:\Users\Kaden's Laptop\Documents\GitHub\KadenFranklin.github.io\Pizza_pasta\Pasta"
-pizza = r"C:\Users\Kaden's Laptop\Documents\GitHub\KadenFranklin.github.io\Pizza_pasta\Pizza"
-person = r"C:\Users\Kaden's Laptop\Documents\GitHub\KadenFranklin.github.io\Pizza_pasta\Person"
+ocv = r"C:\Users\kaden\Downloads\opencv\build\x64\vc15\bin"
+path = r"C:\Users\kaden\Downloads\assets"
+pasta = r"C:\Users\kaden\Downloads\Pizza_pasta\Pasta"
+pizza = r"C:\Users\kaden\Downloads\Pizza_pasta\Pizza"
+person = r"C:\Users\kaden\Downloads\Pizza_pasta\Person"
 
 
 # dect_face()

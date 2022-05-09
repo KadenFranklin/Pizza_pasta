@@ -1,0 +1,53 @@
+import os
+
+
+# To create a cascade classifier one must first assemble a set of positive and negative images.
+# This is typically done manually, The positive images contain elements you wish to detect when using your classifer
+# The negative images may contain anything, but should not contain elements you are seeking.
+
+# The programs used from this point on can be acquired from:
+# https://sourceforge.net/projects/opencvlibrary/files/opencv-win/3.4.3/
+# You will want to use version 3.4 because this is the most recent version that some of the cascade utils still work in
+# the executable files referenced can be found in opencv/build/x64/vc15/bin
+
+# Step 1:
+# run the opencv_annotation.exe
+# it takes two arguments --annotations (a text file where you want to store the annotations) and --images (the directory of images you wish to annotate)
+# it will look something like:
+# C:\Users\kaden\Downloads\opencv\build\x64\vc15\bin\opencv_annotation.exe --annotations=Jalepeno\pos.txt --images=Jalepeno
+
+# You click once to set the upper left corner, then again to set the lower right corner.
+# Press 'c' to confirm.
+# Or 'd' to undo the previous confirmation.
+# When done, click 'n' to move to the next image.
+# Press 'esc' to exit.
+# Will exit automatically when you've annotated all of the images
+
+# once you have completed marking your samples, the text file will contain the proper annotations
+# However, you will need to open the file and edit it before moving on to the next step, as all of the slashes are going the wrong directions
+
+# I also found it extremely helpful to remove the lines of the file that have no annotation values, they look something like this
+# Onion/2018-11-29_16-17-59_UTC.jpg 0
+
+# Step 2:
+# generate positive samples from the annotations to get a vector file using:
+# C:/Users/kaden/Downloads/opencv/build/x64/vc15/bin/opencv_createsamples.exe -info pos.txt -w 24 -h 24 -num 500 -vec pos.vec
+# num must be greater number of rectangles drawn
+
+# Step 3:
+# train the cascade classifier model using:
+# C:/Users/kaden/Downloads/opencv/build/x64/vc15/bin/opencv_traincascade.exe -data Jalepeno/data -vec pos.vec -bg neg.txt -numPos 200 -numNeg 100 -numStages 10 -w 24 -h 24
+# numpos must be less than the number of rectangles drawn , in step # 1
+
+# you can mess around with other variables in this line, but this is what I used to generate my cascade classifiers
+# C:/Users/kaden/Downloads/opencv/build/x64/vc15/bin/
+
+# opencv_traincascade.exe -data Jalepeno/data -vec Jalepeno/pos.vec -bg neg.txt -precalcValBufSize 6000 -precalcIdxBufSize 6000 -numPos 200 -numNeg 1000 -numStages 15 -w 24 -h 24 -maxFalseAlarmRate 0.4 -minHitRate 0.999
+# opencv_traincascade.exe -data Mushroom/data -vec Mushroom/pos.vec -bg neg.txt -precalcValBufSize 6000 -precalcIdxBufSize 6000 -numPos 100 -numNeg 1000 -numStages 15 -w 24 -h 24 -maxFalseAlarmRate 0.4 -minHitRate 0.999
+# opencv_traincascade.exe -data Olive/data -vec Olive/pos.vec -bg neg.txt -precalcValBufSize 6000 -precalcIdxBufSize 6000 -numPos 500 -numNeg 1000 -numStages 15 -w 24 -h 24 -maxFalseAlarmRate 0.4 -minHitRate 0.999
+# opencv_traincascade.exe -data Onion/data -vec Onion/pos.vec -bg neg.txt -precalcValBufSize 6000 -precalcIdxBufSize 6000 -numPos 130 -numNeg 200 -numStages 10 -w 24 -h 24 -maxFalseAlarmRate 0.4 -minHitRate 0.999
+# opencv_traincascade.exe -data Pepperoni/data -vec Pepperoni/pos.vec -bg neg.txt -precalcValBufSize 6000 -precalcIdxBufSize 6000 -numPos 290 -numNeg 1000 -numStages 15 -w 24 -h 24 -maxFalseAlarmRate 0.4 -minHitRate 0.999
+# opencv_traincascade.exe -data Pickle/data -vec Pickle/pos.vec -bg neg.txt -precalcValBufSize 6000 -precalcIdxBufSize 6000 -numPos 230 -numNeg 1000 -numStages 15 -w 24 -h 24 -maxFalseAlarmRate 0.4 -minHitRate 0.999
+
+# references:
+# https://www.youtube.com/watch?v=XrCAvs9AePM
