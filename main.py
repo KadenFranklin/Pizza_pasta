@@ -3,6 +3,7 @@ import json
 import lzma
 import shutil
 import cv2 as cv
+import matplotlib.pyplot as plt
 
 # Timeline:
 # by 4/22
@@ -125,6 +126,36 @@ def not_comment():
                                     break
 
 
+def dect_pers(s):
+    face = cv.CascadeClassifier('Pasta\haarcascade_frontalface_default.xml')
+    eye = cv.CascadeClassifier('Pasta\haarcascade_eye_tree_eyeglasses.xml')
+    alt = cv.CascadeClassifier('Pasta\haarcascade_frontalface_alt.xml')
+    alt2 = cv.CascadeClassifier('Pasta\haarcascade_frontalface_alt2.xml')
+    alttre = cv.CascadeClassifier('Pasta\haarcascade_frontalface_alt_tree.xml')
+    faces = face.detectMultiScale(s, 1.1, 8)
+    if len(faces) >= 1:
+        for (x, y, w, h) in faces:
+            faceROI = s[y:y+h, x:x+w]
+            eyes = eye.detectMultiScale(faceROI, 1.1, 4)
+            alts = alt.detectMultiScale(s, 1.1, 5)
+            alts2 = alt2.detectMultiScale(s, 1.1, 5)
+            altstre = alttre.detectMultiScale(s, 1.1, 5)
+            if len(faces) >= 3:
+                return 1
+            if len(faces) >= 1 and len(eyes) >= 1:
+                return 1
+            elif len(faces) >= 2 and (len(alts) + len(alts2) + len(altstre)) >= 2:
+                return 1
+            else:
+                return 0
+    else:
+        return 0
+
+
+def moving_average(data, window):
+    return [sum(data[i:i+window]) / window for i in range(len(data) - window)]
+
+
 # To initialize the dataset must use a Library called instaloader.
 # It did not work on my machine, but here is the code to replicate an instagram dataset.
 
@@ -162,51 +193,55 @@ pic = cv.CascadeClassifier('Pizza\Pickle\Data\cascade.xml')
 # pizza_pie()
 # follow instructions in cascade utils.txt to create classifiers
 # Yes I trained 15 stages for each cascade, and only used 12 so what...
-# key is filename of img(date), and value is list(of ingredients)
-pizza_dict = {}
-# I might need to make several dicts/lists for each ingredient
+
+jal_lst = []
+mush_lst = []
+oli_lst = []
+pep_lst = []
+pic_lst = []
+peep_lst = []
+pizza_list = [jal_lst, mush_lst, oli_lst, pep_lst, pic_lst, peep_lst]
 
 for file in os.listdir(path):
     if file.endswith('.jpg'):
+        print(file)
         n_path = path + '\\' + file
         img = cv.imread(n_path)
         gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         gray = cv.equalizeHist(gray)
         dect_jal = jal.detectMultiScale(gray, 1.1, 12)
-        dect_msuh = mush.detectMultiScale(gray, 1.1, 12)
+        dect_mush = mush.detectMultiScale(gray, 1.1, 12)
         dect_oli = oli.detectMultiScale(gray, 1.1, 12)
-        dect_oni = oni.detectMultiScale(gray, 1.1, 12)
+#        dect_oni = oni.detectMultiScale(gray, 1.1, 12) - this classifier did not provide any sufficient values
         dect_pep = pep.detectMultiScale(gray, 1.1, 12)
         dect_pic = pic.detectMultiScale(gray, 1.1, 12)
-        if len(dect_jal) >= 1:
-            x = 2
+        dect_peep = dect_pers(gray)
+        pizza_list[0].append(len(dect_jal))
+        pizza_list[1].append(len(dect_mush))
+        pizza_list[2].append(len(dect_oli))
+        pizza_list[3].append(len(dect_pep))
+        pizza_list[4].append(len(dect_pic))
+        pizza_list[5].append(dect_peep)
+        if file == '2022-04-14_18-43-09_UTC.jpg':
+            break
 
+for item in pizza_list:
+    book_window = 1500
+    n = moving_average(pizza_list[0], book_window)
+    plt.plot(range(len(n)), n, color="yellow")
+    n = moving_average(pizza_list[1], book_window)
+    plt.plot(range(len(n)), n, color="brown")
+    n = moving_average(pizza_list[2], book_window)
+    plt.plot(range(len(n)), n, color="black")
+    n = moving_average(pizza_list[3], book_window)
+    plt.plot(range(len(n)), n, color="red")
+    n = moving_average(pizza_list[4], book_window)
+    plt.plot(range(len(n)), n, color="green")
+    n = moving_average(pizza_list[4], book_window)
+    plt.plot(range(len(n)), n, color="blue")
+    break
 
-#       should make a frequency chart of ingredients over time
-#           use the filenames in some way so that they are displayed
-#           properly in chronological order
-
-# sent_afinn = []
-# for line in book_lines_list:
-#     if afinn.score(line) > -50:
-#         sent_afinn.append(afinn.score(line))
-#
-# sent_vader = []
-# values_dict = {}
-# for line in book_lines_list:
-#     values = sid.polarity_scores(line)
-#     values_dict[line] = values['compound']
-#     if values['compound'] > -0.9999999:
-#         sent_vader.append(values['compound'])
-
-# def moving_average(data, window):
-#     return [sum(data[i:i+window]) / window for i in range(len(data) - window)]
-#
-# book_window = 2**10
-# n = moving_average(sent_afinn, book_window)
-# plt.plot(range(len(n)), n)
-# n = moving_average([s*5 for s in sent_vader], 2**10)
-# plt.plot(range(len(n)), n)
+plt.show()
 
 # imaginary pseudocode for detecting the most popular person on erics instagram.
 
