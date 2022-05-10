@@ -149,33 +149,31 @@ person = r"C:\Users\kaden\Downloads\Pizza_pasta\Person"
 # pizza_pie()
 # follow instructions in cascade utils.txt to create classifiers
 
-jal = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Jalepeno\Data\cascade.xml"
-mush = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Mushroom\Data\cascade.xml"
-oli = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Olive\Data\cascade.xml"
-oni = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Onion\Data\cascade.xml"
-pep = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Pepperoni\Data\cascade.xml"
-pic = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Pickle\Data\cascade.xml"
-tom = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Tomato\Data\cascade.xml"
+jal = cv.CascadeClassifier("Pizza\Jalepeno\Data\cascade.xml")
+mush = cv.CascadeClassifier("Pizza\Mushroom\Data\cascade.xml")
+oli = cv.CascadeClassifier("Pizza\Olive\Data\cascade.xml")
+oni = cv.CascadeClassifier("Pizza\Onion\Data\cascade.xml")
+pep = cv.CascadeClassifier("Pizza\Pepperoni\Data\cascade.xml")
+pic = cv.CascadeClassifier("Pizza\Pickle\Data\cascade.xml")
 
-# pers_list = []
-# for peep in person:
-#     x = 1
-# what ability do we have to compare one face to another?
-# if peep not in list,
-#         append to list
-#     else:
-#         make a new entry in list_of_per
+for file in os.listdir(path):
+    if file.endswith('.jpg'):
+        n_path = path + '\\' + file
+        img = cv.imread(n_path)
+        gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        gray = cv.equalizeHist(gray)
+        dect_jal = jal.detectMultiScale(gray, 1.1, 12)
+        dect_msuh = mush.detectMultiScale(gray, 1.1, 12)
+        dect_oli = oli.detectMultiScale(gray, 1.1, 12)
+        dect_oni = oni.detectMultiScale(gray, 1.1, 12)
+        dect_pep = pep.detectMultiScale(gray, 1.1, 12)
+        dect_pic = pic.detectMultiScale(gray, 1.1, 12)
+        if len(dect_jal) >= 1:
+            x = 2
 
-# for elem in pers_list
-#   find highest count and display that image.
-
-# ingredients = ['Pepperoni', 'Mushroom', 'Tomato', 'Olive', 'Pickle', 'Onion', 'Jalepeno']
-#       for img in assets:
-#
 #       should make a frequency chart of ingredients over time
 #           use the filenames in some way so that they are displayed
 #           properly in chronological order
-#
 
 # sent_afinn = []
 # for line in book_lines_list:
@@ -199,3 +197,18 @@ tom = r"C:\Users\kaden\Downloads\pizza_pasta\Pizza\Tomato\Data\cascade.xml"
 # n = moving_average([s*5 for s in sent_vader], 2**10)
 # plt.plot(range(len(n)), n)
 
+# imaginary pseudocode for detecting the most popular person on erics instagram.
+
+# pers_dict = {key: str, val: int } - key is the filename, value is a counter for frequency
+
+# for file in os.listdir(person):
+#   if (file contains roi similiar enough to some other face in face_dict):
+#       pers_dict[file] = (val += 1)
+
+#   else:
+#       person has not been on erics instagram yet, and must be added to the dict
+#       pers_dict[file] = 1
+#       call not_comment() here if  it ever works
+
+# for elem in pers_dict:
+#   print((highest val in pers_dict).key)
