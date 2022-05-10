@@ -45,11 +45,11 @@ def dect_face():
     # Checks if an img contains a face and moves it to the People directory
     # I had to use multiple cascade classifiers to check each image. I was getting a good number of false positives.
 
-    face = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
-    eye = cv.CascadeClassifier('haarcascade_eye_tree_eyeglasses.xml')
-    alt = cv.CascadeClassifier('haarcascade_frontalface_alt.xml')
-    alt2 = cv.CascadeClassifier('haarcascade_frontalface_alt2.xml')
-    alttre = cv.CascadeClassifier('haarcascade_frontalface_alt_tree.xml')
+    face = cv.CascadeClassifier('Pasta\haarcascade_frontalface_default.xml')
+    eye = cv.CascadeClassifier('Pasta\haarcascade_eye_tree_eyeglasses.xml')
+    alt = cv.CascadeClassifier('Pasta\haarcascade_frontalface_alt.xml')
+    alt2 = cv.CascadeClassifier('Pasta\haarcascade_frontalface_alt2.xml')
+    alttre = cv.CascadeClassifier('Pasta\haarcascade_frontalface_alt_tree.xml')
 
     for file in os.listdir(path):
         if file.endswith('.jpg'):
@@ -125,8 +125,6 @@ def not_comment():
                                     break
 
 
-# def make_pizza(s):
-
 # To initialize the dataset must use a Library called instaloader.
 # It did not work on my machine, but here is the code to replicate an instagram dataset.
 
@@ -135,26 +133,37 @@ def not_comment():
 # 	for post in Post.from_username(L.context, ‘eric_thepizzaguy’).get_posts():
 # 		L.download_post(post, target = ‘#assets’)
 
+# or something more like this:
+
+# import instaloader
+# L = instaloader.Instaloader()
+# from instaloader import Profile
+# p = Profile.from_username(L.context, 'eric_thepizzaguy')
+# for post in p.get_posts():
+#   L.download_post(post, target="#assets")
+
 # Main Algorithm
 # Calls above functions in appropriate locations, loops through person directory, and makes a frequency count per person
-# Then loops through all images, checks each image against presets & stores values in a dict where key is filename of img(date), and value is list(of ingredients)
+# Then loops through all images, checks each image against presets & stores values in pizza_dict
+
 ocv = r"C:\Users\kaden\Downloads\opencv\build\x64\vc15\bin"
-path = r"C:\Users\kaden\Downloads\assets"
+path = r"C:\Users\kaden\Downloads\#assets"
 pasta = r"C:\Users\kaden\Downloads\Pizza_pasta\Pasta"
 pizza = r"C:\Users\kaden\Downloads\Pizza_pasta\Pizza"
 person = r"C:\Users\kaden\Downloads\Pizza_pasta\Person"
-
+jal = cv.CascadeClassifier('Pizza\Jalepeno\Data\cascade.xml')
+mush = cv.CascadeClassifier('Pizza\Mushroom\Data\cascade.xml')
+oli = cv.CascadeClassifier('Pizza\Olive\Data\cascade.xml')
+oni = cv.CascadeClassifier('Pizza\Onion\Data\cascade.xml')
+pep = cv.CascadeClassifier('Pizza\Pepperoni\Data\cascade.xml')
+pic = cv.CascadeClassifier('Pizza\Pickle\Data\cascade.xml')
 
 # dect_face()
 # pizza_pie()
 # follow instructions in cascade utils.txt to create classifiers
-
-jal = cv.CascadeClassifier("Pizza\Jalepeno\Data\cascade.xml")
-mush = cv.CascadeClassifier("Pizza\Mushroom\Data\cascade.xml")
-oli = cv.CascadeClassifier("Pizza\Olive\Data\cascade.xml")
-oni = cv.CascadeClassifier("Pizza\Onion\Data\cascade.xml")
-pep = cv.CascadeClassifier("Pizza\Pepperoni\Data\cascade.xml")
-pic = cv.CascadeClassifier("Pizza\Pickle\Data\cascade.xml")
+# Yes I trained 15 stages for each cascade, and only used 12 so what...
+# key is filename of img(date), and value is list(of ingredients)
+pizza_dict = {}
 
 for file in os.listdir(path):
     if file.endswith('.jpg'):
@@ -170,6 +179,7 @@ for file in os.listdir(path):
         dect_pic = pic.detectMultiScale(gray, 1.1, 12)
         if len(dect_jal) >= 1:
             x = 2
+
 
 #       should make a frequency chart of ingredients over time
 #           use the filenames in some way so that they are displayed
