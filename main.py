@@ -164,6 +164,7 @@ pic = cv.CascadeClassifier('Pizza\Pickle\Data\cascade.xml')
 # Yes I trained 15 stages for each cascade, and only used 12 so what...
 # key is filename of img(date), and value is list(of ingredients)
 pizza_dict = {}
+# I might need to make several dicts/lists for each ingredient
 
 for file in os.listdir(path):
     if file.endswith('.jpg'):
