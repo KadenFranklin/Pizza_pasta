@@ -211,7 +211,7 @@ for file in os.listdir(path):
         gray = cv.equalizeHist(gray)
         dect_jal = jal.detectMultiScale(gray, 1.1, 12)
         dect_mush = mush.detectMultiScale(gray, 1.1, 12)
-        dect_oli = oli.detectMultiScale(gray, 1.1, 12)
+        dect_oli = oli.detectMultiScale(gray, 1.1, 15)
 #        dect_oni = oni.detectMultiScale(gray, 1.1, 12) - this classifier did not provide any sufficient values
         dect_pep = pep.detectMultiScale(gray, 1.1, 12)
         dect_pic = pic.detectMultiScale(gray, 1.1, 12)
@@ -237,7 +237,7 @@ for item in pizza_list:
     plt.plot(range(len(n)), n, color="red")
     n = moving_average(pizza_list[4], book_window)
     plt.plot(range(len(n)), n, color="green")
-    n = moving_average(pizza_list[4], book_window)
+    n = moving_average(pizza_list[5], book_window)
     plt.plot(range(len(n)), n, color="blue")
     break
 
